@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.apitest.dao.UserMapper">
+
+  <select id="getUserInfoByNo" parameterType="String" resultType="userDTO">
+    SELECT no
+    , email
+    , name
+    , pwd
+    , created_date as createdDate
+    , modified_date as modifiedDate
+    FROM user
+    WHERE no = #{no}
+  </select>
+
+  <insert id="joinUser" parameterType="userDTO" useGeneratedKeys="true" keyProperty="no">
+    INSERT INTO user (name, email, pwd)
+    VALUES (#{name}, #{email}, #{pwd})
+  </insert>
+
+  <update id="updateUserInfo" parameterType="userDTO">
+    UPDATE user
+    <trim prefix="SET" suffixOverrides=",">
+      modified_date = now(),
+      <if test="name != null">name = #{name},</if>
+      <if test="pwd != null">pwd = #{pwd},</if>
+    </trim>
+    WHERE no = #{no}
+  </update>
+
+  <delete id="deleteUser" parameterType="String">
+    DELETE FROM user WHERE no = #{no}
+  </delete>
+
+</mapper>
