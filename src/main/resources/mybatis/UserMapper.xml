@@ -16,19 +16,30 @@
     WHERE no = #{no}
   </select>
 
+  <select id="getUserInfoByEmail" parameterType="String" resultType="userDTO">
+    SELECT no
+    , email
+    , name
+    , pwd
+    , created_date as createdDate
+    , modified_date as modifiedDate
+    FROM user
+    WHERE email = #{email}
+  </select>
+
   <insert id="joinUser" parameterType="userDTO" useGeneratedKeys="true" keyProperty="no">
     INSERT INTO user (name, email, pwd)
     VALUES (#{name}, #{email}, #{pwd})
   </insert>
 
-  <update id="updateUserInfo" parameterType="userDTO">
+  <update id="updateUserInfo" parameterType="HashMap">
     UPDATE user
     <trim prefix="SET" suffixOverrides=",">
       modified_date = now(),
-      <if test="name != null">name = #{name},</if>
-      <if test="pwd != null">pwd = #{pwd},</if>
+      <if test="userRequest.name != null">name = #{userRequest.name},</if>
+      <if test="userRequest.pwd != null">pwd = #{userRequest.pwd},</if>
     </trim>
-    WHERE no = #{no}
+    WHERE no = #{userNo}
   </update>
 
   <delete id="deleteUser" parameterType="String">

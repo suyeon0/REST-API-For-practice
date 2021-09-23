@@ -7,15 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString(exclude = {"pwd"})
 @JsonInclude(Include.NON_NULL)
 public class UserDTO {
@@ -25,7 +20,6 @@ public class UserDTO {
     @NotBlank
     private String name;
 
-    @NotBlank
     private String email;
 
     @NotBlank
@@ -37,5 +31,14 @@ public class UserDTO {
     private String createdDate;
 
     private String modifiedDate;
+
+    @Builder
+    public UserDTO(String name, String email, String pwd, String createdDate, String modifiedDate){
+        this.name = name;
+        this.email= email;
+        this.pwd = pwd;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+    }
 
 }

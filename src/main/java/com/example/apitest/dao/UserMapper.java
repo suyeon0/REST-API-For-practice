@@ -1,6 +1,7 @@
 package com.example.apitest.dao;
 
 import com.example.apitest.dto.UserDTO;
+import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
@@ -28,6 +29,13 @@ public interface UserMapper {
     UserDTO getUserInfoByNo(String no);
 
     /**
+     * 회원 정보 조회 ( 로그인시 이메일로 )
+     * @param email
+     * @return UserDTO
+     */
+    UserDTO getUserInfoByEmail(String email);
+
+    /**
      * 회원 등록
      *
      * @param user
@@ -40,7 +48,7 @@ public interface UserMapper {
      *
      * @param userRequest
      */
-    int updateUserInfo(UserDTO userRequest);
+    int updateUserInfo(HashMap<String, Object> userRequest);
 
     /**
      * 회원 삭제
@@ -48,4 +56,5 @@ public interface UserMapper {
      * @param no
      */
     int deleteUser(String no);
+
 }

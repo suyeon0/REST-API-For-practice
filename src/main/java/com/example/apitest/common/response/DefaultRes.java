@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class DefaultRes<T> {
 
     private String statusCode;
