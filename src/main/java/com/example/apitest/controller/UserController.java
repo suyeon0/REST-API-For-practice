@@ -4,8 +4,10 @@ import com.example.apitest.annotation.EmailFormat;
 import com.example.apitest.annotation.UserNoFormat;
 import com.example.apitest.common.response.DefaultRes;
 import com.example.apitest.dto.UserDTO;
-import com.example.apitest.service.UserService;
+import com.example.apitest.service.UserServiceImpl;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,13 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 @Validated
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserServiceImpl userService;
 
     /**
      * 회원 존재하는지 체크 (중복 체크)

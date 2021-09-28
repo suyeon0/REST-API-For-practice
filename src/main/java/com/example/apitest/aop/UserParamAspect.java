@@ -3,14 +3,18 @@ package com.example.apitest.aop;
 import com.example.apitest.common.util.FormatUtil;
 import com.example.apitest.dto.UserDTO;
 import java.lang.reflect.Method;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 
+@Component
 @Aspect
+@Slf4j
 public class UserParamAspect {
 
     /**
@@ -21,6 +25,7 @@ public class UserParamAspect {
      */
     @Before("execution(* com.example.apitest.controller.UserController.chkEmail(..))")
     public void chkEmail(JoinPoint jp) throws Throwable {
+        log.info("UserParamAspect - chkEmail");
         String email = jp.getArgs()[0].toString();
         FormatUtil.chkEmailFormat(email);
     }
@@ -30,8 +35,10 @@ public class UserParamAspect {
      * @throws Throwable
      * @ EmailFormat 대상 : UserDTO 파라미터 내 email Format 체크
      */
-    @Before("@annotation(com.example.apitest.annotation.EmailFormat)")
+    //@Before("@annotation(com.example.apitest.annotation.EmailFormat)")
+    @Before("execution(* com.example.apitest.controller.UserController.joinUserByJson(..))")
     public void chkEmailInUserDTO(JoinPoint jp) throws Throwable {
+        log.info(">>>>>> UserParamAspect - chkEmailInUserDTO");
         String email = null;
         for (Object arg : jp.getArgs()) {
             if (arg instanceof UserDTO) {

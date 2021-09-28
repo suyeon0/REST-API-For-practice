@@ -2,13 +2,13 @@ package com.example.apitest.controller;
 
 import com.example.apitest.common.util.ResultString;
 import com.example.apitest.dto.UserDTO;
-import com.example.apitest.service.UserService;
+import com.example.apitest.service.UserServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("user2")
 public class LoginController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     /**
      * 로그인 페이지 이동
@@ -34,7 +33,7 @@ public class LoginController {
     }
 
     /**
-     * 로그인 결과 리턴 및 세션 설정
+     * 로그인 결과 리턴 및 쿠키 설정
      *
      * @param req
      * @param params
@@ -42,7 +41,7 @@ public class LoginController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public int login(HttpServletRequest req, @RequestParam Map<String, String> params) {
+    public int login(HttpServletRequest req, HttpServletResponse resp, @RequestParam Map<String, String> params) {
         String inputEmail = params.get("email");
         String inputPwd = params.get("pwd");
         try {
@@ -54,8 +53,13 @@ public class LoginController {
             } else if (msg.equals(ResultString.USER_INCORRECT_PWD)) {
                 return 2;
             } else {
-                HttpSession session = req.getSession();
-                session.setAttribute("name", dto.getName());
+                // 로그인 쿠키 생성
+                Cookie loginCookie = new Cookie("loginName", dto.getName());
+                loginCookie.setPath("/"); //모든 경로에서 사용
+                loginCookie.setMaxAge(24 * 60);
+                loginCookie.setDomain("local.test-flab.com");
+                resp.addCookie(loginCookie);
+
                 return 0;
             }
         } catch (Exception e) {
@@ -67,19 +71,22 @@ public class LoginController {
     /**
      * 로그아웃 진행 후 이전 페이지로 이동
      *
-     * @param req
      * @param preURI
      * @return redirect page
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest req, @RequestParam(value = "preURI", required = false) String preURI) {
-        log.info("logout");
+    public String logout(@RequestParam(value = "preURI", required = false) String preURI, HttpServletResponse resp) {
         String nextURI = preURI;
         if (preURI == null || preURI.trim().equals("")) {
             nextURI = "/";
         }
-        HttpSession session = req.getSession();
-        session.invalidate();
+
+        // 로그아웃시 쿠키 삭제
+        Cookie loginCookie = new Cookie("loginName", "");
+        loginCookie.setPath("/");
+        loginCookie.setMaxAge(0);
+        loginCookie.setDomain("local.test-flab.com");
+        resp.addCookie(loginCookie);
 
         return "redirect:" + nextURI;
     }

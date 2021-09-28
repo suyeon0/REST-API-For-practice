@@ -1,6 +1,7 @@
 package com.example.apitest.advice;
 
 import com.example.apitest.common.exception.UserDupException;
+import com.example.apitest.common.notification.ErrorManage;
 import com.example.apitest.common.notification.SlackSender;
 import com.example.apitest.common.response.Error;
 import com.example.apitest.common.response.ErrorResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
 import javax.validation.Path.Node;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -22,16 +24,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-//@RestControllerAdvice(basePackages = "com.example.apitest")
+@RestControllerAdvice(basePackages = "com.example.apitest")
 @Slf4j
+@RequiredArgsConstructor
 public class GlobalControllerAdvice {
 
     private Error error;
-    private final SlackSender slackSender;
-
-    public GlobalControllerAdvice(SlackSender slackSender) {
-        this.slackSender = slackSender;
-    }
+    private final ErrorManage errorManage;
 
     /**
      * res 내 error 필드에 담을 데이터 세팅
@@ -79,7 +78,7 @@ public class GlobalControllerAdvice {
         errorList.add(this.makeErrorMessage(field, message, invalidValue));
 
         log.error(e.toString());
-        slackSender.send(e.toString());
+        errorManage.manageError(e.toString());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(makeErrorResponse(errorList, httpServletRequest, HttpStatus.BAD_REQUEST.toString()));
@@ -158,7 +157,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity runtimeException(RuntimeException e, HttpServletRequest httpServletRequest) {
-        slackSender.send(e.toString());
+        errorManage.manageError(e.toString());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(HttpStatus.INTERNAL_SERVER_ERROR.toString());
