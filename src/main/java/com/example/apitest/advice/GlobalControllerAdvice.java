@@ -2,7 +2,6 @@ package com.example.apitest.advice;
 
 import com.example.apitest.common.exception.UserDupException;
 import com.example.apitest.common.notification.ErrorManage;
-import com.example.apitest.common.notification.SlackSender;
 import com.example.apitest.common.response.Error;
 import com.example.apitest.common.response.ErrorResponse;
 import java.util.ArrayList;

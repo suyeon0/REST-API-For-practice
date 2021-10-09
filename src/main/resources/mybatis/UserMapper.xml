@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.apitest.dao.UserMapper">
+<mapper namespace="com.example.apitest.dao.user.UserMapper">
 
   <select id="getUserInfoByNo" parameterType="String" resultType="userDTO">
     SELECT no

@@ -1,4 +1,4 @@
-package com.example.apitest.dao;
+package com.example.apitest.dao.log;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface LogMapper {
 
-    @Insert("INSERT INTO error_log(msg) VALUES(#{msg})")
+    @Insert("INSERT INTO login_session(user_no,expire_time) VALUES(#{user_no}, )")
     void insertErrorLog(String msg);
 }

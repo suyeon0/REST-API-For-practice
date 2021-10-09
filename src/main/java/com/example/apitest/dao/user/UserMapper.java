@@ -1,4 +1,4 @@
-package com.example.apitest.dao;
+package com.example.apitest.dao.user;
 
 import com.example.apitest.dto.UserDTO;
 import java.util.HashMap;

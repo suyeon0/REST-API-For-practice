@@ -4,7 +4,7 @@ import com.example.apitest.annotation.EmailFormat;
 import com.example.apitest.annotation.UserNoFormat;
 import com.example.apitest.common.response.DefaultRes;
 import com.example.apitest.dto.UserDTO;
-import com.example.apitest.service.UserServiceImpl;
+import com.example.apitest.service.UserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     /**
      * 회원 존재하는지 체크 (중복 체크)
@@ -115,4 +115,5 @@ public class UserController {
     public String loginForm(){
         return "login/login";
     }
+
 }
