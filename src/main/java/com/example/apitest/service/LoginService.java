@@ -2,9 +2,8 @@ package com.example.apitest.service;
 
 import com.example.apitest.common.util.ResultString;
 import com.example.apitest.common.util.TokenUtil;
-import com.example.apitest.dao.login.LoginMapper;
 import com.example.apitest.dto.UserDTO;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ public class LoginService {
 
     private final TokenUtil tokenUtil;
     private final UserService userService;
-    private final LoginMapper loginMapper;
+    private final RedisService redisService;
 
     /**
      * @param email
@@ -60,7 +59,7 @@ public class LoginService {
     }
 
     /**
-     * 로그인 테이블 토큰 생성
+     * db에 넣을 로그인 토큰 생성
      *
      * @param email
      * @return String token
@@ -99,13 +98,8 @@ public class LoginService {
      * @return
      */
     public boolean isLoginTokenExpired(String token) {
-        String result = loginMapper.isTokenExpired(token);
-        log.info(">>>>>>>isLoginTokenExpired? : " + result);
-        if (ObjectUtils.isEmpty(result)) { //expire 되지 않은 경우
-            return false;
-        } else {
-            return true;
-        }
+        boolean result = redisService.isTokenExpiredRedis(token);
+        return result;
     }
 
     /**
@@ -114,16 +108,12 @@ public class LoginService {
      * @param token
      */
     public void insertLoginToken(String token) {
-        // 새로운 토큰 유효시간 =  생성시간 + 설정해놓은 token 유효시간
+        // 새로운 토큰 유효시간 =  현재시간 + 설정해놓은 token 유효시간
         long expireTime = Long.parseLong(tokenUtil.getExpireTime());
-        Date expirationDate = new Date(System.currentTimeMillis() + expireTime);
-        java.sql.Timestamp sqlDate = new java.sql.Timestamp(expirationDate.getTime());
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime expirationDate = currentTime.plusSeconds(expireTime);
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("expirationDate", sqlDate);
-
-        loginMapper.insertLoginToken(map);
+        redisService.insertLoginTokenRedis(token, expirationDate.toString());
     }
 
 }

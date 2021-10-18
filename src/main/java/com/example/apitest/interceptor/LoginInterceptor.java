@@ -1,6 +1,7 @@
 package com.example.apitest.interceptor;
 
 import com.example.apitest.service.LoginService;
+import com.example.apitest.service.RedisService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.util.WebUtils;
 public class LoginInterceptor implements HandlerInterceptor {
 
     private final LoginService loginService;
+    private final RedisService redisService;
 
     /**
      * login interceptor - 로그인 토큰 정보 확인
@@ -52,7 +54,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 return true;
             }
         } catch (Exception e) {
-            log.error("login interceptor exception 발생");
+            log.error("login interceptor exception 발생", e);
         }
         return true;
     }
