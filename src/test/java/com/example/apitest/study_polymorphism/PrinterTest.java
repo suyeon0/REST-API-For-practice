@@ -1,6 +1,5 @@
-package com.example.apitest.study;
+package com.example.apitest.study_polymorphism;
 
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class PrinterTest {
@@ -15,7 +14,8 @@ public class PrinterTest {
         } else {
             module = new ColorModule();
         }
-        printer = new Printer(module);
+        printer = new Printer();
+        printer.setModule(module);
         printer.startPrint();
     }
 

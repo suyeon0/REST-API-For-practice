@@ -1,10 +1,10 @@
-package com.example.apitest.study;
+package com.example.apitest.study_polymorphism;
 
 public class Printer {
 
-    private final PrinterModule module;
+    private PrinterModule module;
 
-    public Printer(PrinterModule module) {
+    public void setModule(PrinterModule module){
         this.module = module;
     }
 

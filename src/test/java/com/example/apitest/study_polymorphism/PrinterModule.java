@@ -1,4 +1,4 @@
-package com.example.apitest.study;
+package com.example.apitest.study_polymorphism;
 
 /**
  * 공통기능 인터페이스로 묶어놓음 -> 추상화
