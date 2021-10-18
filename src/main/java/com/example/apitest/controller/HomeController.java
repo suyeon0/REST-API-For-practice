@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @GetMapping("/")
-
     public String home(HttpServletRequest req, @CookieValue(value = "loginName", required = false) Cookie loginCk) {
         log.info("welcome!");
 
@@ -27,5 +26,7 @@ public class HomeController {
 
         return "index";
     }
+
+
 
 }
