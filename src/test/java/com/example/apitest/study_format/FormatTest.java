@@ -1,4 +1,4 @@
-package com.example.apitest.controller;
+package com.example.apitest.study_format;
 
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Assertions;
