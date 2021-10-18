@@ -1,4 +1,4 @@
-package com.example.apitest.study;
+package com.example.apitest.study_polymorphism;
 
 public class ColorModule implements PrinterModule{
 
