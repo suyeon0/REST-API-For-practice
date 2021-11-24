@@ -7,11 +7,11 @@ package com.example.apitest.study_singleton;
  * (3) 리플렉션(Reflection)을 통한 싱글톤 깨트림을 시도할 수 없습니다.
  *     private로 생성자를 선언해도 runtime에서 리플렉션(Reflection)을 통해 private 생성자에 접근을 할 수 있기때문에 싱글톤 깨트림 문제가 발생할 수 있습니다.
  */
-public enum SingletonEnum {
+public enum S5Enum {
 
-    INSTANCE(); //Instance 하나만 만들 수 있음.
+    INSTANCE; //Instance 하나만 만들 수 있음.
 
-    // enum은 런타임이 아닌 컴파일 타임에 모든 값을 알고 있어야 함 --> 생성자가 private 로 제한된다.
-    private SingletonEnum() { }
+    //enum은 런타임이 아닌 컴파일 타임에 모든 값을 알고 있어야 함 --> 생성자가 private 로 제한된다.
+    private S5Enum() { }
 
 }

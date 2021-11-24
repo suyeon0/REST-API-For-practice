@@ -10,13 +10,13 @@ package com.example.apitest.study_singleton;
  * 리소스가 큰 프로그램에서는 부담으로 작용할 수 있다 --> 불필요한 리소스 낭비 초래
  * 2. 클래스가 인스턴스화 되는 시점에 어떠한 에러 처리를 할 수 없는 문제
  */
-public class Eager {
+public class S1Eager {
 
-    private static Eager instance = new Eager();
+    private static S1Eager instance = new S1Eager();
 
-    private Eager(){}
+    private S1Eager(){}
 
-    public static Eager getInstance(){
+    public static S1Eager getInstance(){
         return instance;
     }
 }
